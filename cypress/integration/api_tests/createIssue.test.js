@@ -3,6 +3,7 @@
 const faker = require('faker')
 
 describe('Create Issue', () => {
+  it('successfully created', () => {
   const issue = {
     title: `issue-${faker.datatype.uuid()}`,
     description: `${faker.random.words(4)}`,
@@ -10,19 +11,13 @@ describe('Create Issue', () => {
       name: `project${faker.datatype.uuid()}`,
       description: `${faker.random.words(5)}`
     }
-
   }
-  before(() => {
-    cy.login()
-    cy.gui_createProject(issue.project)
-  })
-
-  it('successfully created', () => {
-    cy.gui_createIssue(issue)
-
-    cy.get('.issue-details')
-      .should('contain', issue.title)
-      .and('contain', issue.description)
+    cy.api_createIssue(issue)
+      .then(response => {
+        expect(response.status).to.equal(201)
+        expect(response.body.title).to.equal(issue.title)
+        expect(response.body.description).to.equal(issue.description)
+      })
   })
 
 })

@@ -1,3 +1,5 @@
+/// <reference types="Cypress" />
+
 Cypress.Commands.add('login', () => {
   cy.visit('users/sign_in')
 
